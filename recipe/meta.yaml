@@ -1,5 +1,5 @@
 {% set name = "git-delta" %}
-{% set version = "0.17.0" %}
+{% set version = "0.18.0" %}
 
 package:
   name: {{ name | lower }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://github.com/dandavison/delta/archive/refs/tags/{{ version }}.tar.gz
-  sha256: 1abd21587bcc1f2ef0cd342784ce990da9978bc345578e45506419e0952de714
+  sha256: 1cdd61373b34cd6d20a0184efc9e445939f743d92b2b89a83ec787b4cf93f5a4
 
 build:
   number: 0
@@ -16,7 +16,9 @@ requirements:
   build:
     - {{ compiler('rust') }}
     - {{ compiler('c') }}              # [not win]
+    - {{ stdlib("c") }}                # [not win]
     - {{ compiler('m2w64_c') }}        # [win]
+    - {{ stdlib("m2w64_c") }}          # [win]
     - cargo-bundle-licenses
   host:
     - zlib
