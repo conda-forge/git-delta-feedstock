@@ -1,5 +1,5 @@
 {% set name = "git-delta" %}
-{% set version = "0.18.0" %}
+{% set version = "0.18.1" %}
 
 package:
   name: {{ name | lower }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://github.com/dandavison/delta/archive/refs/tags/{{ version }}.tar.gz
-  sha256: 1cdd61373b34cd6d20a0184efc9e445939f743d92b2b89a83ec787b4cf93f5a4
+  sha256: ef558e0ee4c9a10046f2f8e2e59cf1bedbb18c2871306b772d3d9b8e3b242b9c
 
 build:
   number: 0
