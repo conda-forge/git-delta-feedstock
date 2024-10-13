@@ -2,13 +2,9 @@
 cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
 
 :: build
-cargo install --locked --root "%PREFIX%" --path . || goto :error
-
-:: strip debug symbols
-strip "%PREFIX%\bin\delta.exe" || goto :error
-
-:: remove extra build file
-del /F /Q "%PREFIX%\.crates.toml"
+set CARGO_PROFILE_RELEASE_STRIP=symbols
+set CARGO_PROFILE_RELEASE_LTO=fat
+cargo install --no-track --locked --root "%PREFIX%" --path . || goto :error
 
 goto :EOF
 
