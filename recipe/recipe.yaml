@@ -1,0 +1,42 @@
+schema_version: 1
+
+context:
+  name: git-delta
+  version: "0.19.0"
+
+package:
+  name: ${{ name | lower }}
+  version: ${{ version }}
+
+source:
+  url: https://github.com/dandavison/delta/archive/refs/tags/${{ version }}.tar.gz
+  sha256: cb11c5fb6514f94b6bb3bb6a163ca3653bdd234fcf7aa0c71b0861e77ca44324
+
+build:
+  number: 1
+
+requirements:
+  build:
+    - ${{ compiler('rust') }}
+    - ${{ compiler('c') }}
+    - ${{ stdlib("c") }}
+    - cargo-bundle-licenses
+  host:
+    - zlib
+
+tests:
+  - script:
+      - delta --version
+
+about:
+  license: MIT
+  license_file:
+    - LICENSE.txt
+    - THIRDPARTY.yml
+  summary: A syntax-highlighting pager for git, diff, and grep output.
+  homepage: https://github.com/dandavison/delta
+
+extra:
+  recipe-maintainers:
+    - YYYasin19
+    - pavelzw
