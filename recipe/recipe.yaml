@@ -2,7 +2,7 @@ schema_version: 1
 
 context:
   name: git-delta
-  version: "0.19.1"
+  version: "0.19.2"
 
 package:
   name: ${{ name | lower }}
@@ -10,7 +10,7 @@ package:
 
 source:
   url: https://github.com/dandavison/delta/archive/refs/tags/${{ version }}.tar.gz
-  sha256: a2089af1b86264d45a2b5872708701aca4506d1c092be23017bb610af369f283
+  sha256: f59b86f8c8dda4d76a3ba34b8553777a20c3b461646917d8e480fac6531bba9f
 
 build:
   number: 0
