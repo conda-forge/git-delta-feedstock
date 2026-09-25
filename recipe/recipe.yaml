@@ -1,19 +1,20 @@
 schema_version: 1
 
 context:
-  name: git-delta
   version: "0.19.2"
 
 package:
-  name: ${{ name | lower }}
+  name: git-delta
   version: ${{ version }}
 
 source:
   url: https://github.com/dandavison/delta/archive/refs/tags/${{ version }}.tar.gz
   sha256: f59b86f8c8dda4d76a3ba34b8553777a20c3b461646917d8e480fac6531bba9f
+  patches:
+    - 0001-fallback-to-temporary-cache-directory.patch
 
 build:
-  number: 0
+  number: 1
 
 requirements:
   build:
@@ -25,8 +26,18 @@ requirements:
     - zlib
 
 tests:
-  - script:
+  - files:
+      recipe:
+        - test.diff
+    script:
       - delta --version
+      - delta --no-gitconfig --paging=never < test.diff > delta.out
+      - if: win
+        then:
+          - findstr /C:"from delta" delta.out
+          - if errorlevel 1 exit 1
+      - if: unix
+        then: grep -F "from delta" delta.out
 
 about:
   license: MIT

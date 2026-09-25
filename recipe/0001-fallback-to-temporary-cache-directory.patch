@@ -1,0 +1,42 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Clay Warren <clay@claywarren.com>
+Date: Tue, 1 Sep 2026 00:00:00 -0500
+Subject: [PATCH] Fall back to the temporary directory for bat assets
+
+Some non-interactive Windows accounts do not have a Local AppData known
+folder. Avoid panicking before command-line processing in that environment by
+using the operating system temporary directory as the final cache fallback.
+
+---
+ src/utils/bat/dirs.rs | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/src/utils/bat/dirs.rs b/src/utils/bat/dirs.rs
+index 00fc0dd..9d7c18e 100644
+--- a/src/utils/bat/dirs.rs
++++ b/src/utils/bat/dirs.rs
+@@ -4,7 +4,7 @@
+ use lazy_static::lazy_static;
+ use std::path::{Path, PathBuf};
+ 
+-#[cfg(target_os = "macos")]
++#[cfg(any(target_os = "macos", target_os = "windows"))]
+ use std::env;
+ 
+ /// Wrapper for 'dirs' that treats MacOS more like Linux, by following the XDG specification.
+@@ -22,9 +22,12 @@ impl BatProjectDirs {
+             .filter(|p| p.is_absolute())
+             .or_else(|| dirs::home_dir().map(|d| d.join(".cache")));
+ 
+-        #[cfg(not(target_os = "macos"))]
++        #[cfg(all(not(target_os = "macos"), not(target_os = "windows")))]
+         let cache_dir_op = dirs::cache_dir();
+ 
++        #[cfg(target_os = "windows")]
++        let cache_dir_op = Some(dirs::cache_dir().unwrap_or_else(env::temp_dir));
++
+         let cache_dir = cache_dir_op.map(|d| d.join("bat"))?;
+ 
+         Some(BatProjectDirs { cache_dir })
+-- 
+2.51.0
