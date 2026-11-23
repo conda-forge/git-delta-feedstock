@@ -1,7 +1,7 @@
 schema_version: 1
 
 context:
-  version: "0.21.2"
+  version: "0.22.0"
 
 package:
   name: git-delta
@@ -9,7 +9,7 @@ package:
 
 source:
   url: https://github.com/dandavison/delta/archive/refs/tags/${{ version }}.tar.gz
-  sha256: d8b5b3c3a5a354b5fddd6e7156f62c8a5db2a33aad9d49debd536777facb66b7
+  sha256: 71fb0ba85058a8f206f11ea227d2f940f6051c9c81dcb238935e10b0dc82c09c
   patches:
     - 0001-fallback-to-temporary-cache-directory.patch
 
